@@ -9,15 +9,16 @@ var Application = {
 
     init_faye: function(){
       Application.faye = new Faye.Client('http://localhost:9292/faye');
-      var subscription = Application.faye.subscribe('/markers', Application.message_handler);
+      Application.faye.subscribe('/markers_ip', Application.message_ip_handler);
+      Application.faye.subscribe('/markers_address', Application.message_address_handler);
     },
 
-    message_handler: function(message){
+    message_ip_handler: function(message){
       Map.draw_marker(message.lat, message.lng, message.ip);
     },
 
-    test_message: function(){
-      Application.faye.publish('/markers', {lat: 51.0, lng: -0.18, ip: "127.0.0.1"});
+    message_address_handler: function(message){
+      Map.address_lookup(message.address);
     }
 };
 

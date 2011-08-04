@@ -31,6 +31,20 @@ var Map = {
       this.map = new google.maps.Map(document.getElementById("map") , options);
     },
 
+    address_lookup: function(address){
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode( { 'address': address }, function(results, status) {
+          if(results[0] === undefined){
+            return ""; /* stop if there is no results*/
+          }
+          $.each(results, function(i, elem){
+            var lat = elem.geometry.location.lat();
+            var lng = elem.geometry.location.lng();
+            Map.draw_marker(lat, lng);
+          });
+       });
+    },
+
     draw_marker: function(x, y, name){
       var latlng = new google.maps.LatLng(x, y);
 
